@@ -1,0 +1,83 @@
+.global-header {
+    border-bottom: 2px solid #1a1a1a;
+    padding: 1rem 2rem;
+    display: flex;
+    /*justify-content: space-between;*/
+    align-items: center;
+    background-color: #fefefe;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.global-header > .logo {
+    font-size: 1rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    width: 280px;
+}
+
+.global-header > .search-container {
+    flex: 1;
+    max-width: 400px;
+    margin: 0 2rem;
+    position: relative;
+}
+
+.global-header > .search-container > .search-input {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    border: 1px solid #1a1a1a;
+    background-color: transparent;
+    font-family: inherit;
+    font-size: 0.9rem;
+}
+
+.global-header > .search-container > .search-input::placeholder {
+    color: #666;
+    font-style: italic;
+}
+
+.global-header > .site-nav {
+    display: flex;
+    gap: 0.5rem;
+    align-items: start;
+    padding-left: 0.4rem;
+    padding-right: 0.4rem;
+    flex-grow: 1;
+}
+
+.global-header > .site-nav > a {
+    display: flex;
+    gap: 3px;
+    align-items: center;
+}
+
+.global-header > .site-nav > a:hover,
+.global-header > .site-nav > a:active,
+.global-header > .site-nav > a.primary {
+    background: var(--color-black-1);
+    color: var(--color-white-1);
+}
+
+.global-header > .user-menu {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.global-header > .user-menu > .dark-mode-toggle {
+    padding: 0.5rem;
+    border: 1px solid #1a1a1a;
+    background-color: transparent;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s ease;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
