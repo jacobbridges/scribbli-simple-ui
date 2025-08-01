@@ -1,5 +1,5 @@
 import GlobalHeader from '~/components/global-header/global-header';
-import LeftSidebar from '~/components/left-sidebar/left-sidebar';
+import LeftSidebar from '~/components/sidebar-augustus/left-sidebar';
 
 export function WorldCodex() {
   return (

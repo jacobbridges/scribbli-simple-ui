@@ -8,8 +8,10 @@ import {
 
 export default [
     index("routes/home.tsx"),
-    route("universe", "routes/universe/universe-route.tsx", [
-      index('routes/universe/universe-index-route.tsx'),
+    route("universe", "routes/universe/_base.tsx", [
+      index('routes/universe/index.tsx'),
+      route("create-world", "routes/universe/create-world.tsx"),
       route("world/:worldId", "routes/universe/universe-world-detail.tsx"),
     ]),
+    route("nero", "routes/nero/index.tsx"),
 ] satisfies RouteConfig;

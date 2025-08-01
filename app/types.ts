@@ -1,3 +1,9 @@
+export interface User {
+  title: string;
+  email: string;
+  avatar: string;
+}
+
 export interface Relationship {
   name: string;
   status: string;
@@ -29,8 +35,9 @@ export interface Character {
 export interface World {
   id: string;
   name: string;
+  authorName: string;
   lastEdited: string;
   access: 'owner' | 'shared' | 'public';
-  character: Character; // In a real app, this would be a list of entities
+  tags: string[];
   description: string;
 }

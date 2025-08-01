@@ -1,4 +1,4 @@
-.sidebar {
+.sidebar-augustus {
     width: 280px;
     border-right: 1px solid #ddd;
     background-color: #fafafa;
@@ -9,19 +9,19 @@
     position: relative;
 }
 
-.sidebar.collapsed {
+.sidebar-augustus.collapsed {
     width: 60px;
 }
 
-.sidebar.collapsed .sidebar-section {
+.sidebar-augustus.collapsed .sidebar-section {
     display: none;
 }
 
-.sidebar.collapsed .sidebar-toggle {
+.sidebar-augustus.collapsed .sidebar-toggle {
     display: block;
 }
 
-.sidebar-toggle {
+.sidebar-augustus .sidebar-toggle {
     position: absolute;
     top: 1rem;
     right: -10px;
@@ -37,16 +37,16 @@
     transition: all 0.3s ease;
 }
 
-.sidebar-toggle:hover {
+.sidebar-augustus .sidebar-toggle:hover {
     transform: scale(1.1);
 }
 
-.sidebar-section {
+.sidebar-augustus .sidebar-section {
     margin-bottom: 2rem;
     padding: 0 1.5rem;
 }
 
-.sidebar-title {
+.sidebar-augustus .sidebar-title {
     font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -55,7 +55,7 @@
     font-weight: normal;
 }
 
-.nav-item {
+.sidebar-augustus .nav-item {
     display: block;
     padding: 0.5rem 0;
     color: #1a1a1a;
@@ -65,25 +65,25 @@
     font-size: 0.95rem;
 }
 
-.nav-item:hover,
-.nav-item:active {
+.sidebar-augustus .nav-item:hover,
+.sidebar-augustus .nav-item:active {
     border-bottom-color: #1a1a1a;
     padding-left: 0.5rem;
 }
 
-.world-selector {
+.sidebar-augustus .world-selector {
     border-bottom: 1px solid #ddd;
     padding-bottom: 1rem;
     margin-bottom: 2rem;
 }
 
-.world-name {
+.sidebar-augustus .world-name {
     font-size: 1.1rem;
     font-weight: bold;
     margin-bottom: 0.5rem;
 }
 
-.world-status {
+.sidebar-augustus .world-status {
     font-size: 0.8rem;
     color: #666;
     font-style: italic;

@@ -12,9 +12,9 @@ interface NavItem {
 export default function GlobalHeader() {
 
   const worldNavItems: NavItem[] = [
-    {label: "Home", url: "/worlds/home", icon: "home"},
-    {label: "Explore Universe", url: "/worlds/explore", icon: "globe_alt"},
-    {label: "Help", url: "/worlds/help"},
+    {label: "Home", url: "/universe/home", icon: "home"},
+    {label: "Explore Universe", url: "/universe", icon: "globe_alt"},
+    {label: "Help", url: "/universe/help"},
   ]
 
   const storyNavItems: NavItem[] = [
@@ -25,7 +25,7 @@ export default function GlobalHeader() {
 
   const { pathname } = useLocation();
   let navItems: NavItem[] = [];
-  if (pathname.startsWith("/worlds")) {
+  if (pathname.startsWith("/universe")) {
     navItems = worldNavItems;
   }
   if (pathname.startsWith("/stories")) {
