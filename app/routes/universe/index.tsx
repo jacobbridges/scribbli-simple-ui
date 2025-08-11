@@ -1,7 +1,7 @@
 import type {Route} from "../../../.react-router/types/app/routes/universe/+types";
 import type {World} from "~/types";
 
-import {useEffect, useLayoutEffect, useMemo, useRef, useState} from "react";
+import {useLayoutEffect} from "react";
 import {Form, useSearchParams, useNavigation} from "react-router"
 
 import { apiMock } from "~/services/api/client";
@@ -53,7 +53,7 @@ export default function UniverseIndexRoute(args: Route.ComponentProps) {
   }
 
   return (
-    <div className="flex p-6 gap-4">
+    <div className="flex p-6 gap-6">
       <ListControl />
       <MainContent isLoading={isLoading} worlds={worlds} error={null} />
     </div>
@@ -67,7 +67,7 @@ function ListControl() {
 
   return (
     <div className="min-w-[160px]">
-      <div className="flex flex-col p-4 h-full border-gray-100 bg-gray-50">
+      <div className="flex flex-col p-4 border-gray-100 bg-gray-50">
         <Form method="get" action="." className="">
           {/*Search Box*/}
           <div className="flex items-center max-w-sm mx-auto">
@@ -239,9 +239,9 @@ async function searchFakeWorlds(args: WorldListArgs): Promise<World[]> {
   let worlds = loadFakeWorlds();
 
   if ('needle' in args && typeof args.needle === 'string') {
-    const needle: string = args.needle;
+    const needle: string = args.needle.toLowerCase();
     worlds = worlds.filter((value: World, index: number) => {
-      return value.name.includes(needle) || value.description.includes(needle);
+      return value.name.toLowerCase().includes(needle) || value.description.toLowerCase().includes(needle);
     })
   }
 
