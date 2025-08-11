@@ -1,62 +1,50 @@
 import type {Route} from "../../../.react-router/types/app/routes/universe/+types";
 import type {World} from "~/types";
 
-import {useEffect, useState} from "react";
+import {useEffect, useLayoutEffect, useMemo, useRef, useState} from "react";
+import {Form, useSearchParams, useNavigation} from "react-router"
 
 import { apiMock } from "~/services/api/client";
 import WorldTile from "~/components/world-tile/world-tile";
-import Sidebar, {type SidebarNavSection} from "~/components/sidebar-augustus/sidebar-augustus"
-import {GlobeAltIcon, SearchIcon} from "~/components/icons";
-import {Link} from "react-router";
+import {useLayout} from "~/contexts/layout-context";
+import SimplePromotionalText from "~/components/simple-promotional-text";
+import {cull} from "~/utils";
 
+
+interface WorldListArgs {
+  needle?: string;
+  sortBy?: string;
+  quickFilters?: string[];
+}
 
 export async function clientLoader(args: Route.ClientLoaderArgs) {
   // const res = await apiMock.getAll("world", {limit: 10});
-  return loadFakeWorlds();
+  const url = new URL(args.request.url);
+  const needle = url.searchParams.get("needle") || undefined;
+  const sortBy = url.searchParams.get("sortBy") || "createdAt";
+
+  const listArgs = cull({needle, sortBy});
+  return await searchFakeWorlds(listArgs)
 }
 
 export default function UniverseIndexRoute(args: Route.ComponentProps) {
 
-  const [worlds, setWorlds] = useState<World[]>(args.loaderData as World[]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState<string>('');
+  const {setPageTitle, setPromotion, setCrumbs} = useLayout();
+  useLayoutEffect(() => {
+    setPageTitle("Worlds");
+    setPromotion((
+      <SimplePromotionalText text="The Yogg is devouring the Overflowing Expanse.." linkTo="/" />
+    ));
+    setCrumbs([
+      {title: "Universe", to: "/universe"},
+    ]);
+  }, []);
 
-  // useEffect(() => {
-  //   // loadWorlds();
-  //
-  //   const throttleTimer = setTimeout(() => {
-  //     setWorlds(loadFakeWorlds().filter(world => !searchQuery ? true : world.name.toLowerCase().includes(searchQuery.toLowerCase())));
-  //   }, 600);
-  //
-  //   return () => {
-  //     clearTimeout(throttleTimer);
-  //   }
-  // }, [searchQuery])
+  const worlds = args.loaderData as World[];
+  const navigation = useNavigation();
+  const isLoading = navigation.state === 'loading';
 
-  const loadWorlds = async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const response = await apiMock.getAll('worlds', {
-        sortBy: 'name',
-        sortOrder: 'asc',
-      });
-
-      if (response.success && response.data) {
-        setWorlds(response.data as World[]);
-      } else {
-        setError(response.error || 'Failed to load users');
-      }
-    } catch (err) {
-      setError('An unexpected error occurred');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-lg">Loading worlds...</div>
@@ -65,68 +53,97 @@ export default function UniverseIndexRoute(args: Route.ComponentProps) {
   }
 
   return (
-    <>
-      <LeftSidebar searchQuery={searchQuery} onSearchInput={setSearchQuery} />
-      <MainContent isLoading={loading} worlds={worlds} error={error} />
-    </>
+    <div className="flex p-6 gap-4">
+      <ListControl />
+      <MainContent isLoading={isLoading} worlds={worlds} error={null} />
+    </div>
   )
 }
 
 
-type LeftSidebarProps = {
-  onSearchInput: (query: string) => void;
-  searchQuery: string;
-}
-
-function LeftSidebar(props: LeftSidebarProps) {
-
-  const sections: SidebarNavSection[] = [
-    {
-      title: "Section",
-      items: [
-        {
-          title: "Yay",
-          url: "#",
-        },
-        {
-          title: "Nay",
-          url: "#",
-        }
-      ]
-    }
-  ]
-
-  const searchComponent = (
-    <div className="relative mt-4 max-w-lg">
-      <input
-        type="text"
-        placeholder="Search "
-        value={props.searchQuery}
-        onChange={e => props.onSearchInput(e.target.value)}
-        className={"w-full border text-sm py-2 pl-8 pr-4 focus:ring-1 focus:outline-none"}
-      />
-      <SearchIcon className={"absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 text-brand-text-dim"}/>
-    </div>
-  )
-
-  const createWorldButton = (
-    <div className="relative mt-4 max-w-lg">
-      <Link type="button"
-            className="w-full text-white bg-[#050708] hover:bg-[#050708]/80 focus:ring-4 focus:outline-none hover:cursor-pointer focus:ring-[#050708]/50 font-medium text-sm px-5 py-2.5 text-center inline-flex items-center justify-evenly dark:hover:bg-[#050708]/40 dark:focus:ring-gray-600"
-            to={"create-world"}
-      >
-        <GlobeAltIcon />
-        Create New World
-      </Link>
-    </div>
-  )
+function ListControl() {
+  const [searchParams] = useSearchParams();
+  const currentSort = searchParams.get('sortBy') || 'createdAt';
 
   return (
-    <Sidebar title={"Universe"}
-             sections={sections}
-             topActionSection={searchComponent}
-             lowActionSection={createWorldButton}
-    ></Sidebar>
+    <div className="min-w-[160px]">
+      <div className="flex flex-col p-4 h-full border-gray-100 bg-gray-50">
+        <Form method="get" action="." className="">
+          {/*Search Box*/}
+          <div className="flex items-center max-w-sm mx-auto">
+            <label htmlFor="default-search"
+                   className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+            <div className="relative w-full">
+              <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                </svg>
+              </div>
+              <input type="search" id="default-search"
+                     name="needle"
+                     className="block w-full p-1 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                     placeholder="Search worlds"/>
+            </div>
+            <button type="submit"></button>
+            {/*Dedicated search button*/}
+            {/*<button type="submit"*/}
+            {/*        className="p-1 ms-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">*/}
+            {/*  <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"*/}
+            {/*       viewBox="0 0 20 20">*/}
+            {/*    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"*/}
+            {/*          d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>*/}
+            {/*  </svg>*/}
+            {/*  <span className="sr-only">Search</span>*/}
+            {/*</button>*/}
+          </div>
+
+          {/*Filters*/}
+          <div className="pt-6 w-full">
+            <h3 className="text-xs font-extrabold tracking-tight">Filters</h3>
+            <ul>
+              <li className="w-full px-5 py-2 hover:cursor-pointer hover:bg-gray-100">My Worlds</li>
+              <li className="w-full px-5 py-2 hover:cursor-pointer hover:bg-gray-100">Active Today</li>
+            </ul>
+          </div>
+
+          {/*Sorts*/}
+          <div className="pt-6 w-full">
+            <h3 className="text-xs font-extrabold tracking-tight">Order By</h3>
+            <ul>
+              <SortByListItem label="Newest" name="sortBy" value="createdAt" currentSort={currentSort} />
+              <SortByListItem label="Oldest" name="sortBy" value="-createdAt" currentSort={currentSort} />
+              <SortByListItem label="Active" name="sortBy" value="lastActive" currentSort={currentSort} />
+              <SortByListItem label="Dormant" name="sortBy" value="-lastActive" currentSort={currentSort} />
+            </ul>
+          </div>
+        </Form>
+      </div>
+    </div>
+  )
+}
+
+
+interface SortByListItemProps {
+  currentSort: string;
+  name: string;
+  value: string;
+  label: string;
+}
+function SortByListItem({label, name, value, currentSort}: SortByListItemProps) {
+  return (
+    <li className="w-full">
+      <button
+        type="submit"
+        name={name}
+        value={value}
+        disabled={currentSort === value}
+        className={`w-full px-5 py-2 text-left ${currentSort === value ? 'underline' : 'hover:cursor-pointer hover:bg-gray-100'}`}
+      >
+        {label}
+      </button>
+    </li>
   )
 }
 
@@ -153,11 +170,9 @@ function MainContent(props: MainContentProps) {
       </div>
     );
 
-  const { worlds } = props;
+  const {worlds} = props;
   return (
-    <div className="p-6 flex-1">
-
-      {/*<h2 className={"text-4xl font-bold dark:text-white"}>Worlds</h2>*/}
+    <div className="flex-1">
 
       {worlds.length === 0 ? (
         <div className="text-gray-500">
@@ -166,7 +181,7 @@ function MainContent(props: MainContentProps) {
       ) : (
         <div className={"grid grid-cols-3 gap-4 justify-items-start"}>
           {worlds.map((world: World) => (
-            <WorldTile world={world} key={world.id} />
+            <WorldTile world={world} key={world.id}/>
           ))}
         </div>
       )}
@@ -175,12 +190,14 @@ function MainContent(props: MainContentProps) {
 }
 
 function loadFakeWorlds(): World[] {
+  console.log("loadFakeWorlds called")
   return [
     {
       id: '1',
       name: 'Aetherville',
       authorName: 'Gruff McDwarf',
       lastEdited: (new Date()).toDateString(),
+      createdAt: 1241412,
       access: 'public',
       tags: ['high-fantasy'],
       description: 'Vel dolorum galisum vel sunt voluptatem in quaerat dolor hic doloremque voluptatem. Hic optio possimus eos consequatur aperiam aut nulla doloremque sit assumenda galisum et optio dolor.',
@@ -190,6 +207,7 @@ function loadFakeWorlds(): World[] {
       name: 'New Jersey',
       authorName: 'GingerTea',
       lastEdited: (new Date()).toDateString(),
+      createdAt: 125152,
       access: 'public',
       tags: ['real-life', '18+'],
       description: 'Est asperiores commodi ut ullam reprehenderit eum culpa nobis ut odio dicta. Eos animi optio a placeat dolores qui totam galisum. Sed culpa quisquam eos reprehenderit provident aut maxime consequuntur.',
@@ -199,6 +217,7 @@ function loadFakeWorlds(): World[] {
       name: 'Tatooine',
       authorName: 'Nivix Zixer',
       lastEdited: (new Date()).toDateString(),
+      createdAt: 128558,
       access: 'public',
       tags: ['sci-fi'],
       description: 'Et asperiores beatae cum adipisci provident nam molestias voluptas quo consequatur ipsam quo quia quos. Hic similique nulla ut ullam ipsum ut totam cupiditate ut omnis architecto vel fugiat provident.',
@@ -208,9 +227,32 @@ function loadFakeWorlds(): World[] {
       name: 'Earth-8CG',
       authorName: 'hmmTUBMAN',
       lastEdited: (new Date()).toDateString(),
+      createdAt: 12436322,
       access: 'public',
       tags: ['sci-fi', 'grim'],
       description: 'Aut beatae recusandae qui rerum vitae et galisum repudiandae eum vitae ullam eos dicta nihil et tempora porro. Est repellendus omnis cum similique enim qui dolorum enim eos soluta magni. Sit voluptatem ipsa eos architecto nostrum vel molestiae voluptate. Vel dolorum voluptatibus ut expedita optio est magnam voluptas est modi quas et ipsa architecto ut laboriosam officia.',
     },
   ]
+}
+
+async function searchFakeWorlds(args: WorldListArgs): Promise<World[]> {
+  let worlds = loadFakeWorlds();
+
+  if ('needle' in args && typeof args.needle === 'string') {
+    const needle: string = args.needle;
+    worlds = worlds.filter((value: World, index: number) => {
+      return value.name.includes(needle) || value.description.includes(needle);
+    })
+  }
+
+  return worlds.sort((a, b) => {
+    switch(args.sortBy) {
+      case "createdAt":
+        return (a.createdAt < b.createdAt) ? 1 : -1
+      case "-createdAt":
+        return (a.createdAt > b.createdAt) ? 1 : -1
+      default:
+        return 1
+    }
+  })
 }

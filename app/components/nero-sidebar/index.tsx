@@ -30,9 +30,9 @@ export default function NeroSidebar(props: SidebarProps) {
 
   return (
     <>
-      <div className="w-full border-r border-r-gray-100">
-        <div className="border-b-2 border-b-gray-100 p-5 text-2xl font-bold">
-          <span>Site ::</span>
+      <div className="h-full w-full border-r border-r-gray-200 bg-gray-50">
+        <div className="border-b-2 border-b-gray-300 p-5 text-2xl font-bold">
+          <span>Site :: </span>
           <span>{subsiteTitle}</span>
         </div>
         {sections.map((section) => (

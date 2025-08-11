@@ -1,15 +1,12 @@
 import {Outlet} from 'react-router';
+import NeroLayoutWithContext from "~/layouts/nero/with-context";
 
-import GlobalHeader from "~/components/global-header/global-header";
 
-export default function UniverseRoute() {
+export default function UniverseBase() {
+
   return (
-    <>
-      <GlobalHeader></GlobalHeader>
-
-      <div className="main-container">
-        <Outlet />
-      </div>
-    </>
-  )
+    <NeroLayoutWithContext>
+      <Outlet />
+    </NeroLayoutWithContext>
+  );
 }

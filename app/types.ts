@@ -37,6 +37,7 @@ export interface World {
   name: string;
   authorName: string;
   lastEdited: string;
+  createdAt: number;
   access: 'owner' | 'shared' | 'public';
   tags: string[];
   description: string;
