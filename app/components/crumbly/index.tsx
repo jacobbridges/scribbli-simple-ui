@@ -28,6 +28,9 @@ export interface CrumblyProps extends ComponentProps<"nav"> {
 }
 
 export default function Crumbly({ crumbs, ...navProps }: CrumblyProps) {
+  if (crumbs.length === 0)
+    return (<div></div>)
+
   const renderCrumbItem = (crumb: Crumb, isLast: boolean, isClickable: boolean = true) => (
     <BreadcrumbItem key={crumb.title}>
       {isClickable && !isLast ? (
