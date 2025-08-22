@@ -24,11 +24,9 @@ export default function NeroLayoutWithContext(props: NeroLayoutProps) {
   ];
 
   return (
-    <LayoutProvider>
+    <LayoutProvider defaultLeftSidebarSections={leftSidebarSections}>
       <NeroBFD>
-        <NeroLeftSidebarContainer>
-          <NeroSidebar activeSubsite="universe" sections={leftSidebarSections} />
-        </NeroLeftSidebarContainer>
+        <NeroLeftSidebarContainer />
         <NeroRightContentContainer>
           <NeroGlobalNavBarContainer />
           <NeroRegionalNavBarContainer />
@@ -53,12 +51,14 @@ export function NeroBFD(props: PropsWithChildren) {
 }
 
 export function NeroLeftSidebarContainer(props: PropsWithChildren) {
+  const { leftSidebarSections } = useLayout();
   return (
     <div
       id="left-sidebar"
       className="min-w-[200px] md:min-w-[280px]"
     >
-      {props.children}
+      {/*TODO: Make activeSubsite a variable that is passed in.*/}
+      <NeroSidebar activeSubsite="universe" sections={leftSidebarSections} />
     </div>
   )
 }
