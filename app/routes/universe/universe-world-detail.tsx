@@ -1,5 +1,5 @@
 import type { Route } from "./+types/universe-world-detail";
-import type {World} from "~/types";
+import type { World } from "~/types";
 
 import { apiMock } from "~/services/api/client";
 

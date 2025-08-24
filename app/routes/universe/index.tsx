@@ -1,14 +1,14 @@
-import type {Route} from "../../../.react-router/types/app/routes/universe/+types";
-import type {World} from "~/types";
+import type { Route } from "../../../.react-router/types/app/routes/universe/+types";
+import type { World } from "~/types";
 
-import {useLayoutEffect} from "react";
-import {Form, useSearchParams, useNavigation} from "react-router"
+import { useLayoutEffect } from "react";
+import { Form, useSearchParams, useNavigation } from "react-router"
 
 import { apiMock } from "~/services/api/client";
 import WorldTile from "~/components/world-tile/world-tile";
-import {useLayout} from "~/contexts/layout-context";
+import { useLayout } from "~/contexts/layout-context";
 import SimplePromotionalText from "~/components/simple-promotional-text";
-import {cull} from "~/utils";
+import { cull } from "~/utils";
 
 
 interface WorldListArgs {
@@ -33,7 +33,7 @@ export default function UniverseIndexRoute(args: Route.ComponentProps) {
   useLayoutEffect(() => {
     setPageTitle("Worlds");
     setPromotion((
-      <SimplePromotionalText text="The Yogg is devouring the Overflowing Expanse.." linkTo="/" />
+      <SimplePromotionalText text="The Yogg is devouring the Overflowing Expanse.." linkTo="/"/>
     ));
     setCrumbs([
       {title: "Universe", to: "/universe"},
@@ -54,8 +54,8 @@ export default function UniverseIndexRoute(args: Route.ComponentProps) {
 
   return (
     <div className="flex p-6 gap-6">
-      <ListControl />
-      <MainContent isLoading={isLoading} worlds={worlds} error={null} />
+      <ListControl/>
+      <MainContent isLoading={isLoading} worlds={worlds} error={null}/>
     </div>
   )
 }
@@ -112,10 +112,10 @@ function ListControl() {
           <div className="pt-6 w-full">
             <h3 className="text-xs font-extrabold tracking-tight">Order By</h3>
             <ul>
-              <SortByListItem label="Newest" name="sortBy" value="createdAt" currentSort={currentSort} />
-              <SortByListItem label="Oldest" name="sortBy" value="-createdAt" currentSort={currentSort} />
-              <SortByListItem label="Active" name="sortBy" value="lastActive" currentSort={currentSort} />
-              <SortByListItem label="Dormant" name="sortBy" value="-lastActive" currentSort={currentSort} />
+              <SortByListItem label="Newest" name="sortBy" value="createdAt" currentSort={currentSort}/>
+              <SortByListItem label="Oldest" name="sortBy" value="-createdAt" currentSort={currentSort}/>
+              <SortByListItem label="Active" name="sortBy" value="lastActive" currentSort={currentSort}/>
+              <SortByListItem label="Dormant" name="sortBy" value="-lastActive" currentSort={currentSort}/>
             </ul>
           </div>
         </Form>
@@ -131,6 +131,7 @@ interface SortByListItemProps {
   value: string;
   label: string;
 }
+
 function SortByListItem({label, name, value, currentSort}: SortByListItemProps) {
   return (
     <li className="w-full">
@@ -246,7 +247,7 @@ async function searchFakeWorlds(args: WorldListArgs): Promise<World[]> {
   }
 
   return worlds.sort((a, b) => {
-    switch(args.sortBy) {
+    switch (args.sortBy) {
       case "createdAt":
         return (a.createdAt < b.createdAt) ? 1 : -1
       case "-createdAt":
