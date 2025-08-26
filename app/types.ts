@@ -34,11 +34,13 @@ export interface Character {
 
 export interface World {
   id: string;
-  name: string;
-  authorName: string;
-  lastEdited: string;
   createdAt: number;
-  access: 'owner' | 'shared' | 'public';
+  updatedAt: number;
+  name: string;
+  summary: string;
+  audience: 'private' | 'public';
   tags: string[];
-  description: string;
+
+  // Related attributes
+  authorName: string;
 }

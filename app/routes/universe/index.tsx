@@ -192,46 +192,47 @@ function MainContent(props: MainContentProps) {
 
 function loadFakeWorlds(): World[] {
   console.log("loadFakeWorlds called")
+  const now = (new Date()).getTime();
   return [
     {
       id: '1',
       name: 'Aetherville',
       authorName: 'Gruff McDwarf',
-      lastEdited: (new Date()).toDateString(),
-      createdAt: 1241412,
-      access: 'public',
+      updatedAt: now,
+      createdAt: now,
+      audience: 'public',
       tags: ['high-fantasy'],
-      description: 'Vel dolorum galisum vel sunt voluptatem in quaerat dolor hic doloremque voluptatem. Hic optio possimus eos consequatur aperiam aut nulla doloremque sit assumenda galisum et optio dolor.',
+      summary: 'Vel dolorum galisum vel sunt voluptatem in quaerat dolor hic doloremque voluptatem. Hic optio possimus eos consequatur aperiam aut nulla doloremque sit assumenda galisum et optio dolor.',
     },
     {
       id: '2',
       name: 'New Jersey',
       authorName: 'GingerTea',
-      lastEdited: (new Date()).toDateString(),
-      createdAt: 125152,
-      access: 'public',
+      updatedAt: now,
+      createdAt: now,
+      audience: 'public',
       tags: ['real-life', '18+'],
-      description: 'Est asperiores commodi ut ullam reprehenderit eum culpa nobis ut odio dicta. Eos animi optio a placeat dolores qui totam galisum. Sed culpa quisquam eos reprehenderit provident aut maxime consequuntur.',
+      summary: 'Est asperiores commodi ut ullam reprehenderit eum culpa nobis ut odio dicta. Eos animi optio a placeat dolores qui totam galisum. Sed culpa quisquam eos reprehenderit provident aut maxime consequuntur.',
     },
     {
       id: '3',
       name: 'Tatooine',
       authorName: 'Nivix Zixer',
-      lastEdited: (new Date()).toDateString(),
-      createdAt: 128558,
-      access: 'public',
+      updatedAt: now,
+      createdAt: now,
+      audience: 'public',
       tags: ['sci-fi'],
-      description: 'Et asperiores beatae cum adipisci provident nam molestias voluptas quo consequatur ipsam quo quia quos. Hic similique nulla ut ullam ipsum ut totam cupiditate ut omnis architecto vel fugiat provident.',
+      summary: 'Et asperiores beatae cum adipisci provident nam molestias voluptas quo consequatur ipsam quo quia quos. Hic similique nulla ut ullam ipsum ut totam cupiditate ut omnis architecto vel fugiat provident.',
     },
     {
       id: '4',
       name: 'Earth-8CG',
       authorName: 'hmmTUBMAN',
-      lastEdited: (new Date()).toDateString(),
-      createdAt: 12436322,
-      access: 'public',
+      updatedAt: now,
+      createdAt: now,
+      audience: 'public',
       tags: ['sci-fi', 'grim'],
-      description: 'Aut beatae recusandae qui rerum vitae et galisum repudiandae eum vitae ullam eos dicta nihil et tempora porro. Est repellendus omnis cum similique enim qui dolorum enim eos soluta magni. Sit voluptatem ipsa eos architecto nostrum vel molestiae voluptate. Vel dolorum voluptatibus ut expedita optio est magnam voluptas est modi quas et ipsa architecto ut laboriosam officia.',
+      summary: 'Aut beatae recusandae qui rerum vitae et galisum repudiandae eum vitae ullam eos dicta nihil et tempora porro. Est repellendus omnis cum similique enim qui dolorum enim eos soluta magni. Sit voluptatem ipsa eos architecto nostrum vel molestiae voluptate. Vel dolorum voluptatibus ut expedita optio est magnam voluptas est modi quas et ipsa architecto ut laboriosam officia.',
     },
   ]
 }
@@ -242,7 +243,7 @@ async function searchFakeWorlds(args: WorldListArgs): Promise<World[]> {
   if ('needle' in args && typeof args.needle === 'string') {
     const needle: string = args.needle.toLowerCase();
     worlds = worlds.filter((value: World, index: number) => {
-      return value.name.toLowerCase().includes(needle) || value.description.toLowerCase().includes(needle);
+      return value.name.toLowerCase().includes(needle) || value.summary.toLowerCase().includes(needle);
     })
   }
 

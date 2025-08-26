@@ -16,7 +16,7 @@ export default function WorldTile(props: WorldTileProps) {
     >
       <h3 className="text-2xl font-serif font-bold mb-2">{world.name}</h3>
       <p className="text-sm text-brand-text-dim mb-4">by {world.authorName}</p>
-      <p className="flex-grow text-brand-text mb-6 line-clamp-4">{world.description}</p>
+      <p className="flex-grow text-brand-text mb-6 line-clamp-4">{world.summary}</p>
       <div className="flex flex-wrap gap-2 mt-auto pt-4 border-t border-gray-500/10">
         {world.tags.map(tag => (
           <Tag key={tag}>{tag}</Tag>
