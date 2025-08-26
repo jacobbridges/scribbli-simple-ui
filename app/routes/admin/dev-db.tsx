@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import { TextInput } from "~/components/nero-forms"
 import { apiMock } from "~/services/api/client";
 
 export default function AdminDevDbRoute() {
@@ -150,8 +151,17 @@ function NewWorldForm({ handleSubmit }: NewWorldFormProps) {
 
   return (
     <div>
-      <label htmlFor="world-name">World Name</label>
-      <input id="world-name" type="text" onChange={e => setName(e.target.value)} />
+
+      {/*Name Field*/}
+      <TextInput
+        label="World Name"
+        name="name"
+        onChange={(e) => setName(e.target.value)}
+      />
+
+      {/*Headline Field*/}
+
+
       <button onClick={onSubmit}>Submit</button>
     </div>
   )
