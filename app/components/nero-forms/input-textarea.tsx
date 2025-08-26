@@ -21,6 +21,7 @@ export interface InputTextareaProps
 
 export default function InputTextarea(props: InputTextareaProps) {
   const {
+    value,
     label,
     name = camelCase(label),
     placeholder = "",
@@ -35,6 +36,7 @@ export default function InputTextarea(props: InputTextareaProps) {
     rows = 3,
   } = props;
   const textareaProps = omit(props, [
+    "value",
     "label",
     "name",
     "placeholder",
@@ -62,13 +64,14 @@ export default function InputTextarea(props: InputTextareaProps) {
         maxLength={maxLength}
         rows={rows}
         placeholder={placeholder}
+        value={value}
         className={inputClass || "w-full px-4 py-3 border border-gray-300 rounded-sm focus:ring-2 focus:ring-gray-400 focus:border-gray-400 transition-colors text-lg bg-gray-50 focus:bg-white resize-none"}
       />
       <div className={helperTextClass || "text-sm test-gray-500 italic"}>
         <p>
           {helperText}
         </p>
-        <span className="text-sm text-gray-400">0/{maxLength}</span>
+        <span className="text-sm text-gray-400">{value === undefined ? 0 : value?.toString().length}/{maxLength}</span>
       </div>
       {errorText && <div className={errorTextClass || "block text-xs text-red-700"}>
         {errorText}

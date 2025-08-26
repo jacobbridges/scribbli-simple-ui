@@ -166,6 +166,7 @@ function NewWorldForm({ handleSubmit }: NewWorldFormProps) {
         name="summary"
         onChange={(e) => setSummary(e.target.value)}
         helperText="Short description of this world"
+        value={summary}
       />
 
       <button onClick={onSubmit}>Submit</button>
