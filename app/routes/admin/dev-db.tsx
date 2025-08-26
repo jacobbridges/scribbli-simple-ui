@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { TextInput } from "~/components/nero-forms"
+import { TextInput, TextareaInput } from "~/components/nero-forms"
 import { apiMock } from "~/services/api/client";
 
 export default function AdminDevDbRoute() {
@@ -144,9 +144,10 @@ interface NewWorldFormProps {
 
 function NewWorldForm({ handleSubmit }: NewWorldFormProps) {
   const [name, setName] = useState("");
+  const [summary, setSummary] = useState("");
 
   const onSubmit = () => {
-    handleSubmit({name});
+    handleSubmit({name, summary});
   }
 
   return (
@@ -160,7 +161,12 @@ function NewWorldForm({ handleSubmit }: NewWorldFormProps) {
       />
 
       {/*Headline Field*/}
-
+      <TextareaInput
+        label="Headline"
+        name="summary"
+        onChange={(e) => setSummary(e.target.value)}
+        helperText="Short description of this world"
+      />
 
       <button onClick={onSubmit}>Submit</button>
     </div>
