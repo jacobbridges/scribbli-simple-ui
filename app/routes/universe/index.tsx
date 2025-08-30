@@ -2,7 +2,7 @@ import type { Route } from "../../../.react-router/types/app/routes/universe/+ty
 import type { World } from "~/types";
 
 import { useLayoutEffect } from "react";
-import { Form, useSearchParams, useNavigation } from "react-router"
+import { Form, useSearchParams, useNavigation, Link } from "react-router"
 
 import { apiMock } from "~/services/api/client";
 import WorldTile from "~/components/world-tile/world-tile";
@@ -99,8 +99,19 @@ function ListControl() {
             {/*</button>*/}
           </div>
 
+          {/*Actions*/}
+          <div className="pt-4 w-full">
+            <h3 className="text-xs font-extrabold tracking-tight">Actions</h3>
+            <Link
+              to="create-world"
+              className="block w-full px-5 py-2 text-blue-600 hover:cursor-pointer hover:bg-gray-100"
+            >
+              ↗ Create World
+            </Link>
+          </div>
+
           {/*Filters*/}
-          <div className="pt-6 w-full">
+          <div className="pt-4 w-full">
             <h3 className="text-xs font-extrabold tracking-tight">Filters</h3>
             <ul>
               <li className="w-full px-5 py-2 hover:cursor-pointer hover:bg-gray-100">My Worlds</li>
@@ -109,7 +120,7 @@ function ListControl() {
           </div>
 
           {/*Sorts*/}
-          <div className="pt-6 w-full">
+          <div className="pt-4 w-full">
             <h3 className="text-xs font-extrabold tracking-tight">Order By</h3>
             <ul>
               <SortByListItem label="Newest" name="sortBy" value="createdAt" currentSort={currentSort}/>
