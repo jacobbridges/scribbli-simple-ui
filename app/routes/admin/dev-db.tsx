@@ -1,7 +1,8 @@
 import { useState } from "react";
 
-import { TextInput, TextareaInput } from "~/components/nero-forms"
 import { apiMock } from "~/services/api/client";
+import WorldCreateForm from "~/routes/(shared)/world-create-form";
+
 
 export default function AdminDevDbRoute() {
   return (
@@ -9,7 +10,9 @@ export default function AdminDevDbRoute() {
       <nav className="border-gray-200 bg-white dark:bg-gray-900">
         <div className="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4">
           <a href="/admin" className="flex items-center space-x-3 rtl:space-x-reverse">
-            <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Admin</span>
+            <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+              Admin
+            </span>
           </a>
           <button data-collapse-toggle="navbar-default" type="button"
                   className="inline-flex h-10 w-10 items-center justify-center rounded-lg p-2 text-sm text-gray-500 hover:bg-gray-100 focus:ring-2 focus:ring-gray-200 focus:outline-none md:hidden dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
@@ -42,7 +45,7 @@ export default function AdminDevDbRoute() {
           <div className="p-2">
             <ul>
               <li className="p-2">
-                <button>test</button>
+                <button>Manage Worlds</button>
               </li>
             </ul>
           </div>
@@ -131,45 +134,8 @@ function TableActionContainer({tableName} : TableActionContainerProps) {
         {activeContainer === "text" && <div className="w-full bg-gray-100">
             <pre>{text}</pre>
         </div>}
-        {activeContainer === "new" && tableName == "world" && <NewWorldForm handleSubmit={handleNewSubmit} />}
+        {activeContainer === "new" && tableName == "world" && <WorldCreateForm onSubmit={handleNewSubmit} />}
       </div>
-    </div>
-  )
-}
-
-
-interface NewWorldFormProps {
-  handleSubmit: (data: any) => void;
-}
-
-function NewWorldForm({ handleSubmit }: NewWorldFormProps) {
-  const [name, setName] = useState("");
-  const [summary, setSummary] = useState("");
-
-  const onSubmit = () => {
-    handleSubmit({name, summary});
-  }
-
-  return (
-    <div>
-
-      {/*Name Field*/}
-      <TextInput
-        label="World Name"
-        name="name"
-        onChange={(e) => setName(e.target.value)}
-      />
-
-      {/*Headline Field*/}
-      <TextareaInput
-        label="Headline"
-        name="summary"
-        onChange={(e) => setSummary(e.target.value)}
-        helperText="Short description of this world"
-        value={summary}
-      />
-
-      <button onClick={onSubmit}>Submit</button>
     </div>
   )
 }
