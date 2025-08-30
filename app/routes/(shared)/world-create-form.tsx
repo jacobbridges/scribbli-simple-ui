@@ -3,13 +3,13 @@ import type { ComponentProps } from "react";
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from "react-router";
+import { debounce, has } from "lodash";
 
 import {
   TextInput,
   TextareaInput,
   InputChoiceBlocks,
 } from '~/components/nero-forms';
-import { has } from "lodash";
 
 
 const AUDIENCE_CHOICES = [
@@ -33,16 +33,22 @@ const AUDIENCE_CHOICES = [
 interface WorldCreateFormProps
   extends ComponentProps<"form"> {
   onCancel?: () => void;
+  onChange?: (data) => void;
 }
 
 const WorldCreateForm = ({onSubmit, ...props}: WorldCreateFormProps) => {
-  const {register, handleSubmit} = useForm();
+  const {register, handleSubmit, watch} = useForm();
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
   const onCancel = has(props, "onCancel") ? props.onCancel : () => {
     navigate(-1)
   }
+
+  if (has(props, "onChange")) {
+    props.onChange(watch())
+  }
+
   const overrideOnSubmit = async (data) => {
     setIsLoading(true);
     onSubmit(data);
@@ -65,6 +71,7 @@ const WorldCreateForm = ({onSubmit, ...props}: WorldCreateFormProps) => {
         label="Headline"
         helperText="Short description shown on the universe page."
         containerClass="py-2"
+        maxLength={140}
         {...register("summary")}
       />
 
