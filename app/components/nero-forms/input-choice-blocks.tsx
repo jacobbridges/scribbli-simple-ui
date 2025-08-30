@@ -17,6 +17,7 @@ interface InputChoiceBlocksProps {
   choices: Choice[];
   registerFunc: (n: string) => any;
   name?: string;
+  containerClass?: string;
 }
 
 const InputChoiceBlocks = (props: InputChoiceBlocksProps) => {
@@ -25,10 +26,11 @@ const InputChoiceBlocks = (props: InputChoiceBlocksProps) => {
     name = camelCase(props.label),
     choices,
     registerFunc,
+    containerClass,
   } = props;
 
   return (
-    <div className="space-y-4">
+    <div className={containerClass || "space-y-4"}>
       <label className="block text-sm font-semibold text-gray-700 uppercase tracking-wider">
         {label}
       </label>

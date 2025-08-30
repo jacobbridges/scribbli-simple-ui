@@ -71,8 +71,8 @@ export default function InputTextarea(props: InputTextareaProps) {
         className={inputClass || "w-full px-4 py-3 border border-gray-300 rounded-sm focus:ring-2 focus:ring-gray-400 focus:border-gray-400 transition-colors text-lg bg-gray-50 focus:bg-white resize-none"}
         onChange={overrideOnChange}
       />
-      <div className={helperTextClass || "text-sm test-gray-500 italic"}>
-        <p>
+      <div className="flex justify-between items-center">
+        <p className={helperTextClass || "text-sm text-gray-500 italic"}>
           {helperText}
         </p>
         <span className="text-sm text-gray-400">{textLength}/{maxLength}</span>

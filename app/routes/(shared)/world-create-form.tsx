@@ -1,13 +1,15 @@
 import type { ComponentProps } from "react";
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from "react-router";
 
 import {
   TextInput,
   TextareaInput,
   InputChoiceBlocks,
 } from '~/components/nero-forms';
+import { has } from "lodash";
 
 
 const AUDIENCE_CHOICES = [
@@ -30,17 +32,31 @@ const AUDIENCE_CHOICES = [
 
 interface WorldCreateFormProps
   extends ComponentProps<"form"> {
+  onCancel?: () => void;
 }
 
-const WorldCreateForm = ({ onSubmit }: WorldCreateFormProps) => {
+const WorldCreateForm = ({onSubmit, ...props}: WorldCreateFormProps) => {
   const {register, handleSubmit} = useForm();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
+  const onCancel = has(props, "onCancel") ? props.onCancel : () => {
+    navigate(-1)
+  }
+  const overrideOnSubmit = async (data) => {
+    setIsLoading(true);
+    onSubmit(data);
+    setIsLoading(false);
+  }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(overrideOnSubmit)}>
 
       {/* World Name */}
       <TextInput
         label="World Name"
+        placeholder="Enter the name..."
+        containerClass="pb-2"
         {...register("name")}
       />
 
@@ -48,6 +64,7 @@ const WorldCreateForm = ({ onSubmit }: WorldCreateFormProps) => {
       <TextareaInput
         label="Headline"
         helperText="Short description shown on the universe page."
+        containerClass="py-2"
         {...register("summary")}
       />
 
@@ -55,13 +72,28 @@ const WorldCreateForm = ({ onSubmit }: WorldCreateFormProps) => {
       <InputChoiceBlocks
         label="Audience"
         choices={AUDIENCE_CHOICES}
+        containerClass="pt-2 pb-4"
         registerFunc={register}
       />
 
-      <input
-        type="submit"
-        value="Submit"
-      />
+      {/* Form Actions */}
+      <div className="px-8 py-6 bg-gray-50 border-t border-gray-200 flex justify-between items-center">
+        <button
+          onClick={onCancel}
+          type="button"
+          className="px-6 py-2 text-gray-600 hover:text-gray-800 transition-colors font-medium hover:cursor-pointer"
+        >
+          Cancel
+        </button>
+        <input
+          type="submit"
+          value={isLoading ? "Submitting..." : "Create"}
+          disabled={isLoading}
+          className={"px-8 py-2 bg-gray-900 text-white rounded-sm hover:bg-gray-800 transition-colors font-medium " + (
+            isLoading ? "cursor-not-allowed" : "cursor-pointer"
+          )}
+        />
+      </div>
 
     </form>
   )
