@@ -1,3 +1,13 @@
+// Types for common components
+export interface IconComponentProps {
+  size?: number;
+  color?: string;
+  className?: string;
+}
+
+
+// Data Models (primitive)
+
 export interface User {
   title: string;
   email: string;
