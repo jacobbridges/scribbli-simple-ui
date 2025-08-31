@@ -38,7 +38,7 @@ export default function UniverseWorldDetail({ loaderData }: Route.ComponentProps
     )
 
   const { world } = loaderData;
-  const {setPageTitle, setPromotion, setCrumbs} = useLayout();
+  const {setPageTitle, setPromotion, setCrumbs, setLeftSidebarSections} = useLayout();
   useLayoutEffect(() => {
     setPageTitle(world?.name || "Not Found");
     setPromotion((
@@ -56,6 +56,26 @@ export default function UniverseWorldDetail({ loaderData }: Route.ComponentProps
           {title: "404", to: ""},
         ]
     );
+    setLeftSidebarSections([
+      {
+        title: "General",
+        items: [
+          {url: "universe", title: "Universe"},
+          {url: "help", title: "Help"},
+          {url: "talk", title: "Talk"},
+        ],
+      },
+      {
+        title: "World",
+        items: [
+          {url: "", title: "Overview", active: true},
+          {url: `${world?.id}/codex`, title: "Codex"},
+          {url: `${world?.id}/timeline`, title: "Timeline"},
+          {url: `${world?.id}/graph`, title: "Graph View"},
+        ],
+        highlight: false,
+      },
+    ])
   }, [world]);
 
   return (

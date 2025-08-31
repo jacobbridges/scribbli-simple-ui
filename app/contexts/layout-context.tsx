@@ -5,10 +5,12 @@ import {createContext, useContext, useState} from 'react';
 interface SidebarLink {
   title: string;
   url: string;
+  active?: boolean;
 }
 interface SidebarSection {
   title: string;
   items: SidebarLink[];
+  highlight?: boolean;
 }
 
 interface LayoutContextType {
