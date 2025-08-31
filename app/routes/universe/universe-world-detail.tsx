@@ -59,12 +59,12 @@ export default function UniverseWorldDetail({ loaderData }: Route.ComponentProps
   }, [world]);
 
   return (
-    <main className="flex-1 flex flex-col bg-gray-50 overflow-y-auto">
+    <div className="flex bg-gray-50">
       {world
         ? <MainContent world={world} />
         : <div>No world matching that id.</div>
       }
-    </main>
+    </div>
   )
 
 }
@@ -83,18 +83,18 @@ function MainContent({ world }: MainContentProps) {
     { name: "Characters", value: 142, icon: 'IconUsers' },
     { name: "Locations", value: 89, icon: 'IconMapPin' },
     { name: "Stories", value: 12, icon: 'IconBookOpen' },
-    { name: "Lore Pages", value: 478, icon: 'IconScrollText' },
+    { name: "Codex Pages", value: 478, icon: 'IconScrollText' },
   ];
 
   // TODO (model): Design a data model for codex pages.
   // TODO (api): Create an API endpoint which lists recently active codex pages for a world.
   // TODO (page): Load the list of recently active codex pages with clientLoader.
   const recentCodexPages = [
-    { title: "The Sundering", category: "Events", updated: "2 hours ago" },
-    { title: "Aeridor, the Sky-Capital", category: "Locations", updated: "5 hours ago" },
+    { title: "The Sundering", category: "Event", updated: "2 hours ago" },
+    { title: "Aeridor, the Sky-Capital", category: "Location", updated: "5 hours ago" },
     { title: "Shadow Stalkers", category: "Fauna", updated: "1 day ago" },
-    { title: "Lyra Blackthorn", category: "Characters", updated: "2 days ago" },
-    { title: "The Sunfire Blade", category: "Artifacts", updated: "3 days ago" },
+    { title: "Lyra Blackthorn", category: "Character", updated: "2 days ago" },
+    { title: "The Sunfire Blade", category: "Artifact", updated: "3 days ago" },
   ];
 
   // TODO (model): Design a data model for stories.
@@ -118,66 +118,101 @@ function MainContent({ world }: MainContentProps) {
   };
 
   return (
-    <div className="flex-1 p-8">
-      {/* World Description */}
-      <section className="bg-white p-6 rounded-lg border border-gray-200 mb-8 shadow-xs">
-        <h2 className="font-serif text-2xl font-bold text-gray-900 mb-2">Welcome to {world.name}</h2>
-        <p className="text-gray-600 leading-relaxed">{world.summary}</p>
-      </section>
-
-      {/* Stats */}
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {worldStats.map(stat => (
-          <div key={stat.name} className="bg-white p-5 rounded-lg border border-gray-200 flex items-center space-x-4 shadow-xs">
-            <div className="bg-blue-100 text-blue-600 p-3 rounded-full">
-              <StatIcon name={stat.icon} />
-            </div>
-            <div>
-              <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
-              <p className="text-sm font-medium text-gray-500">{stat.name}</p>
-            </div>
-          </div>
-        ))}
-      </section>
-
-      {/* Recent Codex Updates */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <section>
-          <h3 className="font-serif text-xl font-bold text-gray-800 mb-4">Recent Codex Activity</h3>
-          <div className="bg-white rounded-lg border border-gray-200 shadow-xs">
-            <ul className="divide-y divide-gray-200">
-              {recentCodexPages.map((article, index) => (
-                <li key={article.title} className={`p-4 flex justify-between items-center hover:bg-gray-50 ${index === 0 ? 'rounded-t-lg' : ''} ${index === recentCodexPages.length - 1 ? 'rounded-b-lg' : ''}`}>
-                  <div>
-                    <p className="font-semibold text-blue-600 hover:underline cursor-pointer">{article.title}</p>
-                    <p className="text-xs text-gray-500 uppercase tracking-wider">{article.category}</p>
-                  </div>
-                  <p className="text-sm text-gray-500 shrink-0 ml-4">{article.updated}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
+    <>
+      <div className="flex-1 p-8">
+        {/* World Description */}
+        <section className="bg-white p-6 rounded-lg border border-gray-200 mb-8 shadow-xs">
+          <h2 className="font-serif text-2xl font-bold text-gray-900 mb-2">Welcome to {world.name}</h2>
+          <p className="text-gray-600 leading-relaxed">{world.summary}</p>
         </section>
 
-        {/* Active Stories */}
-        <section>
-          <h3 className="font-serif text-xl font-bold text-gray-800 mb-4">Active Stories</h3>
-          <div className="bg-white rounded-lg border border-gray-200 shadow-xs">
-            <ul className="divide-y divide-gray-200">
-              {activeStories.map((story, index) => (
-                <li key={story.title} className={`p-4 flex justify-between items-center hover:bg-gray-50 ${index === 0 ? 'rounded-t-lg' : ''} ${index === activeStories.length - 1 ? 'rounded-b-lg' : ''}`}>
-                  <div>
-                    <p className="font-semibold text-blue-600 hover:underline cursor-pointer">{story.title}</p>
-                    <p className="text-sm text-gray-500">{story.participants} participants</p>
-                  </div>
-                  <p className="text-sm text-gray-500 shrink-0 ml-4">{story.lastPost}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
+        {/* Stats */}
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {worldStats.map(stat => (
+            <div key={stat.name} className="bg-white p-5 rounded-lg border border-gray-200 flex items-center space-x-4 shadow-xs">
+              <div className="bg-blue-100 text-blue-600 p-3 rounded-full">
+                <StatIcon name={stat.icon} />
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
+                <p className="text-sm font-medium text-gray-500">{stat.name}</p>
+              </div>
+            </div>
+          ))}
         </section>
+
+        {/* Recent Codex Updates */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <section>
+            <h3 className="font-serif text-xl font-bold text-gray-800 mb-4">Recent Codex Activity</h3>
+            <div className="bg-white rounded-lg border border-gray-200 shadow-xs">
+              <ul className="divide-y divide-gray-200">
+                {recentCodexPages.map((article, index) => (
+                  <li key={article.title} className={`p-4 flex justify-between items-center hover:bg-gray-50 ${index === 0 ? 'rounded-t-lg' : ''} ${index === recentCodexPages.length - 1 ? 'rounded-b-lg' : ''}`}>
+                    <div>
+                      <p className="font-semibold text-blue-600 hover:underline cursor-pointer">{article.title}</p>
+                      <p className="text-xs text-gray-500 uppercase tracking-wider">{article.category}</p>
+                    </div>
+                    <p className="text-sm text-gray-500 shrink-0 ml-4">{article.updated}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+
+          {/* Active Stories */}
+          <section>
+            <h3 className="font-serif text-xl font-bold text-gray-800 mb-4">Active Stories</h3>
+            <div className="bg-white rounded-lg border border-gray-200 shadow-xs">
+              <ul className="divide-y divide-gray-200">
+                {activeStories.map((story, index) => (
+                  <li key={story.title} className={`p-4 flex justify-between items-center hover:bg-gray-50 ${index === 0 ? 'rounded-t-lg' : ''} ${index === activeStories.length - 1 ? 'rounded-b-lg' : ''}`}>
+                    <div>
+                      <p className="font-semibold text-blue-600 hover:underline cursor-pointer">{story.title}</p>
+                      <p className="text-sm text-gray-500">{story.participants} participants</p>
+                    </div>
+                    <p className="text-sm text-gray-500 shrink-0 ml-4">{story.lastPost}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+        </div>
       </div>
-    </div>
+      <div className="pt-8 pr-8 shrink-0">
+        <div className="bg-white rounded-lg border border-gray-200 shadow-xs">
+          <RightSidebar />
+        </div>
+      </div>
+    </>
   )
 
 }
+
+
+const RightSidebar = () => (
+  <div className="w-80 p-6 flex flex-col min-h-64">
+    {/*<div className="flex border-b border-gray-200 mb-4">*/}
+    {/*  <button className="flex-1 p-2 text-sm font-bold border-b-2 border-blue-600 text-blue-600">Search</button>*/}
+    {/*  <button className="flex-1 p-2 text-sm font-bold text-gray-500 hover:text-gray-800">AI Assistant</button>*/}
+    {/*</div>*/}
+    <div>
+      <h4 className="font-serif font-bold mb-2">Codex Search</h4>
+      <input type="text" placeholder="Search for 'the Heart'..." className="w-full border border-gray-300 rounded-md px-2 py-1.5 mb-4 text-sm" />
+      <ul className="space-y-1 text-sm">
+        <li className="p-2 flex gap-[1rem] justify-between items-center hover:bg-gray-50 rounded-t-lg">
+          <span className="font-bold text-blue-600 hover:underline cursor-pointer">The Dragon's Heart</span>
+          <span className="text-xs text-gray-500 uppercase tracking-wider">Artifact</span>
+        </li>
+        <li className="p-2 flex gap-[1rem] justify-between items-center hover:bg-gray-50">
+          <span className="font-bold text-blue-600 hover:underline cursor-pointer">Jim, the guy with a ridiculously long name for testing the UI</span>
+          <span className="text-xs text-gray-500 uppercase tracking-wider">Figure</span>
+        </li>
+        <li className="p-2 flex gap-[1rem] justify-between items-center hover:bg-gray-50 rounded-b-lg">
+          <span className="font-bold text-blue-600 hover:underline cursor-pointer">Heart of the Mountain</span>
+          <span className="text-xs text-gray-500 uppercase tracking-wider">Location</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+);
