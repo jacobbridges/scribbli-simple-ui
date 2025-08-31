@@ -55,7 +55,7 @@ export function NeroLeftSidebarContainer(props: PropsWithChildren) {
   return (
     <div
       id="left-sidebar"
-      className="min-w-[200px] md:min-w-[280px]"
+      className="w-64"
     >
       {/*TODO: Make activeSubsite a variable that is passed in.*/}
       <NeroSidebar activeSubsite="universe" sections={leftSidebarSections} />
