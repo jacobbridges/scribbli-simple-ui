@@ -31,8 +31,9 @@ export default function NeroSidebar(props: SidebarProps) {
   return (
     <>
       <div className="h-full w-full border-r border-r-gray-200 bg-white">
-        <div className="border-b-2 border-b-gray-300 p-5 text-2xl font-bold">
-          <span>Site :: </span>
+        <div className="border-b-2 border-b-gray-300 text-xl font-bold h-[74px] flex items-center justify-center gap-2 font-serif">
+          <span>Scribbli</span>
+          <span>::</span>
           <span>{subsiteTitle}</span>
         </div>
         {sections.map((section) => (

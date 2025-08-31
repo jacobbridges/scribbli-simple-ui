@@ -42,7 +42,7 @@ export function NeroBFD(props: PropsWithChildren) {
     <div className="flex justify-center bg-gray-700">
       <div
         id="bfd"
-        className="flex h-screen w-full overflow-hidden border border-gray-200 bg-white font-serif shadow-xl"
+        className="flex h-screen w-full overflow-hidden border border-gray-200 bg-white shadow-xl"
       >
         {props.children}
       </div>

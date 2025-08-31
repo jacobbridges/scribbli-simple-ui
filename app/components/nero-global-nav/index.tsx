@@ -28,7 +28,7 @@ export default function NeroGlobalNav(props: GlobalNavProps) {
   return (
     <>
       <div>
-        <h1 className="text-2xl font-bold tracking-wider">{pageTitle}</h1>
+        <h1 className="text-2xl font-bold tracking-wider font-serif">{pageTitle}</h1>
       </div>
       <div className="flex grow justify-end gap-4">
         <div className="flex items-center text-gray-600">
